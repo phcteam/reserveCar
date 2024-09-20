@@ -20,10 +20,7 @@ app.group(`/${apiName}/`, (router) => {
     // Route สำหรับการ login และ register
     router.use("/auth", require("./src/routes/auth/auth.route"));
 
-
-    // Protected routes ที่ต้องใช้ JWT middleware
-
-    router.use("/departments", authenticateToken, require("./src/routes/department.route"));
+    router.use("/", authenticateToken, require("./src/routes/department.route"));
 
 });
 

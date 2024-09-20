@@ -31,7 +31,12 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.users = require("./users.model")(sequelize, Sequelize);
+db.bookings = require("./bookings.model")(sequelize, Sequelize);
 db.depaertments = require("./departments.model")(sequelize, Sequelize);
+db.drivers = require("./drivers.model")(sequelize, Sequelize);
+db.feedbacks = require("./feedbacks.model")(sequelize, Sequelize);
+db.notifications = require("./notifications.model")(sequelize, Sequelize);
+db.users = require("./users.model")(sequelize, Sequelize);
+db.vehicles = require("./vehicles.model")(sequelize, Sequelize);
 
 module.exports = db;
