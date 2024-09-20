@@ -1,23 +1,27 @@
 "use strict";
 
 const db = require("../models/index.model");
-const Database = db.depaertments;
+const Database = db.drivers;
 const Op = db.Sequelize.Op;
 const func = db.Sequelize;
+
 
 module.exports = {
   findall: async function (req, res) {
     const name = req.query.name;
+    const licenseNumber = req.query.licenseNumber;
     const desc = req.query.desc;
+    const rating = req.query.rating;
     const status = req.query.status;
-
     const limit = req.query.limit;
     const page = req.query.page;
 
     var conditions = {};
     if (name) conditions.name = { [Op.like]: `%${name}%` };
-    if (desc) conditions.desc = { [Op.like]: `%${desc}%` };
-    if (status) conditions.status = status;
+    if (licenseNumber) conditions.name = { [Op.like]: `%${licenseNumber}%` };
+    if (desc) conditions.name = { [Op.like]: `%${desc}%` };
+    if (rating) conditions.name = { [Op.like]: `%${rating}%` };
+    if (status) conditions.name = { [Op.like]: `%${status}%` };
 
     var lim = limit ? limit : 10;
     var offs = page ? (page - 1) * lim : 0;
@@ -26,8 +30,7 @@ module.exports = {
       where: conditions,
       limit: parseInt(lim, 10),
       offset: parseInt(offs, 0),
-      order: [["id", "DESC"]],
-
+      order: [["id", "ASC"]],
     })
       .then((data) => {
         res.status(200);
@@ -37,7 +40,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving depaertments.",
+            err.message || "Some error occurred while retrieving drivers.",
         });
       });
   },
@@ -55,7 +58,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving the department.",
+            err.message || "Some error occurred while retrieving the drivers.",
         });
       });
   },
@@ -63,7 +66,9 @@ module.exports = {
   create: async function (req, res) {
     var tmpData = {
       name: req.body.name,
+      licenseNumber: req.body.licenseNumber,
       desc: req.body.desc,
+      rating: req.body.rating,
       status: req.body.status,
     };
 
@@ -76,7 +81,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while creating the department.",
+            err.message || "Some error occurred while creating the drivers.",
         });
       });
   },
@@ -86,7 +91,9 @@ module.exports = {
     const id = req.params.id;
     var tmpData = {
       name: req.body.name,
+      licenseNumber: req.body.licenseNumber,
       desc: req.body.desc,
+      rating: req.body.rating,
       status: req.body.status,
     };
 
@@ -101,7 +108,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving department.",
+            err.message || "Some error occurred while retrieving drivers.",
         });
       });
   },
@@ -121,8 +128,9 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while deleting the department.",
+            err.message || "Some error occurred while deleting the drivers.",
         });
       });
   },
+
 };

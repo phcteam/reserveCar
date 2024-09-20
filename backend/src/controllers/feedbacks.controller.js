@@ -1,23 +1,32 @@
 "use strict";
 
 const db = require("../models/index.model");
-const Database = db.depaertments;
+const Database = db.feedbacks;
 const Op = db.Sequelize.Op;
 const func = db.Sequelize;
 
 module.exports = {
   findall: async function (req, res) {
-    const name = req.query.name;
-    const desc = req.query.desc;
+    const booking_id = req.query.booking_id;
+    const user_id = req.query.user_id;
+    const admin_id = req.query.admin_id;
+    const driver_id = req.query.driver_id;
+    const rating = req.query.rating;
+    const comment = req.query.comment;
     const status = req.query.status;
 
     const limit = req.query.limit;
     const page = req.query.page;
 
     var conditions = {};
-    if (name) conditions.name = { [Op.like]: `%${name}%` };
-    if (desc) conditions.desc = { [Op.like]: `%${desc}%` };
-    if (status) conditions.status = status;
+    if (booking_id) conditions.booking_id = { [Op.like]: `%${booking_id}%` };
+    if (user_id) conditions.user_id = { [Op.like]: `%${user_id}%` };
+    if (admin_id) conditions.admin_id = { [Op.like]: `%${admin_id}%` };
+    if (driver_id) conditions.driver_id = { [Op.like]: `%${driver_id}%` };
+    if (rating) conditions.rating = { [Op.like]: `%${rating}%` };
+    if (comment) conditions.comment = { [Op.like]: `%${comment}%` };
+    if (status) conditions.status = { [Op.like]: `%${status}%` };
+
 
     var lim = limit ? limit : 10;
     var offs = page ? (page - 1) * lim : 0;
@@ -26,7 +35,7 @@ module.exports = {
       where: conditions,
       limit: parseInt(lim, 10),
       offset: parseInt(offs, 0),
-      order: [["id", "DESC"]],
+      order: [["id", "ASC"]],
 
     })
       .then((data) => {
@@ -37,7 +46,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving depaertments.",
+            err.message || "Some error occurred while retrieving feedbacks.",
         });
       });
   },
@@ -55,15 +64,19 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving the department.",
+            err.message || "Some error occurred while retrieving the feedbacks.",
         });
       });
   },
 
   create: async function (req, res) {
     var tmpData = {
-      name: req.body.name,
-      desc: req.body.desc,
+      booking_id: req.body.booking_id,
+      user_id: req.body.user_id,
+      admin_id: req.body.admin_id,
+      driver_id: req.body.driver_id,
+      rating: req.body.rating,
+      comment: req.body.comment,
       status: req.body.status,
     };
 
@@ -76,7 +89,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while creating the department.",
+            err.message || "Some error occurred while creating the feedbacks.",
         });
       });
   },
@@ -85,8 +98,12 @@ module.exports = {
     console.log("Todo " + req.params.id + " updated");
     const id = req.params.id;
     var tmpData = {
-      name: req.body.name,
-      desc: req.body.desc,
+      booking_id: req.body.booking_id,
+      user_id: req.body.user_id,
+      admin_id: req.body.admin_id,
+      driver_id: req.body.driver_id,
+      rating: req.body.rating,
+      comment: req.body.comment,
       status: req.body.status,
     };
 
@@ -101,7 +118,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving department.",
+            err.message || "Some error occurred while retrieving feedbacks.",
         });
       });
   },
@@ -121,7 +138,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while deleting the department.",
+            err.message || "Some error occurred while deleting the feedbacks.",
         });
       });
   },

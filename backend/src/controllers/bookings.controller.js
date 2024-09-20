@@ -1,23 +1,36 @@
 "use strict";
 
 const db = require("../models/index.model");
-const Database = db.depaertments;
+const Database = db.bookings;
 const Op = db.Sequelize.Op;
 const func = db.Sequelize;
 
 module.exports = {
   findall: async function (req, res) {
-    const name = req.query.name;
-    const desc = req.query.desc;
+    const driver_id = req.query.driver_id;
+    const vehicle_id = req.query.vehicle_id;
+    const user_id = req.query.user_id;
+    const start_location = req.query.start_location;
+    const end_location = req.query.end_location;
+    const start_time = req.query.start_time;
+    const end_time = req.query.end_time;
+    const prossengers = req.query.prossengers;
     const status = req.query.status;
 
     const limit = req.query.limit;
     const page = req.query.page;
 
     var conditions = {};
-    if (name) conditions.name = { [Op.like]: `%${name}%` };
-    if (desc) conditions.desc = { [Op.like]: `%${desc}%` };
-    if (status) conditions.status = status;
+
+    if (driver_id) conditions.driver_id = { [Op.like]: `%${driver_id}%` };
+    if (vehicle_id) conditions.vehicle_id = { [Op.like]: `%${vehicle_id}%` };
+    if (user_id) conditions.user_id = { [Op.like]: `%${user_id}%` };
+    if (start_location) conditions.start_location = { [Op.like]: `%${start_location}%` };
+    if (end_location) conditions.end_location = { [Op.like]: `%${end_location}%` };
+    if (start_time) conditions.start_time = { [Op.like]: `%${start_time}%` };
+    if (end_time) conditions.end_time = { [Op.like]: `%${end_time}%` };
+    if (prossengers) conditions.prossengers = { [Op.like]: `%${prossengers}%` };
+    if (status) conditions.status = { [Op.like]: `%${status}%` };
 
     var lim = limit ? limit : 10;
     var offs = page ? (page - 1) * lim : 0;
@@ -26,7 +39,7 @@ module.exports = {
       where: conditions,
       limit: parseInt(lim, 10),
       offset: parseInt(offs, 0),
-      order: [["id", "DESC"]],
+      order: [["id", "ASC"]],
 
     })
       .then((data) => {
@@ -37,7 +50,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving depaertments.",
+            err.message || "Some error occurred while retrieving bookings.",
         });
       });
   },
@@ -55,15 +68,21 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving the department.",
+            err.message || "Some error occurred while retrieving the bookings.",
         });
       });
   },
 
   create: async function (req, res) {
     var tmpData = {
-      name: req.body.name,
-      desc: req.body.desc,
+      driver_id: req.body.driver_id,
+      vehicle_id: req.body.vehicle_id,
+      user_id: req.body.user_id,
+      start_location: req.body.start_location,
+      end_location: req.body.end_location,
+      start_time: req.body.start_time,
+      end_time: req.body.end_time,
+      prossengers: req.body.prossengers,
       status: req.body.status,
     };
 
@@ -76,7 +95,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while creating the department.",
+            err.message || "Some error occurred while creating the bookings.",
         });
       });
   },
@@ -85,8 +104,14 @@ module.exports = {
     console.log("Todo " + req.params.id + " updated");
     const id = req.params.id;
     var tmpData = {
-      name: req.body.name,
-      desc: req.body.desc,
+      driver_id: req.body.driver_id,
+      vehicle_id: req.body.vehicle_id,
+      user_id: req.body.user_id,
+      start_location: req.body.start_location,
+      end_location: req.body.end_location,
+      start_time: req.body.start_time,
+      end_time: req.body.end_time,
+      prossengers: req.body.prossengers,
       status: req.body.status,
     };
 
@@ -101,7 +126,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while retrieving department.",
+            err.message || "Some error occurred while retrieving bookings.",
         });
       });
   },
@@ -121,7 +146,7 @@ module.exports = {
         res.status(500);
         res.send({
           message:
-            err.message || "Some error occurred while deleting the department.",
+            err.message || "Some error occurred while deleting the bookings.",
         });
       });
   },

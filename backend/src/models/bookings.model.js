@@ -18,7 +18,6 @@ module.exports = function (sequelize, Sequelize) {
             end_location: {
                 type: DataTypes.STRING,
             },
-
             start_time: {
                 type: DataTypes.TIME,
             },
