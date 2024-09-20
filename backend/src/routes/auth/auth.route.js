@@ -29,7 +29,15 @@ router.post('/login', async (req, res) => {
     if (!validPassword) return res.status(400).json({ message: 'Invalid password' });
 
     const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token });
+
+    res.json({
+        status: "OK",
+        token,
+        id: user.id,  // หรือใช้ user.id ขึ้นอยู่กับโครงสร้างฐานข้อมูลของคุณ
+        username: user.username,
+        fname: user.fname,
+        lname: user.lname
+    });
 });
 
 module.exports = router;
