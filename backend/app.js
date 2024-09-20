@@ -16,8 +16,7 @@ app.group(`/${apiName}/`, (router) => {
     router.get("/", (req, res) => {
         res.json({ message: `RESTful API version ${version} For Test` });
     });
-
-    // Route สำหรับการ login และ register
+ 
     router.use("/auth", require("./src/routes/auth/auth.route"));
 
     router.use("/", authenticateToken, require("./src/routes/bookings.route"));
