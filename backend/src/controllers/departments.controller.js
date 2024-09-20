@@ -26,7 +26,7 @@ module.exports = {
       where: conditions,
       limit: parseInt(lim, 10),
       offset: parseInt(offs, 0),
-      order: [["id", "DESC"]],
+      order: [["id", "ASC"]],
 
     })
       .then((data) => {

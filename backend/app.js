@@ -20,7 +20,12 @@ app.group(`/${apiName}/`, (router) => {
     // Route สำหรับการ login และ register
     router.use("/auth", require("./src/routes/auth/auth.route"));
 
-    router.use("/", authenticateToken, require("./src/routes/department.route"));
+    router.use("/", authenticateToken, require("./src/routes/bookings.route"));
+    router.use("/", authenticateToken, require("./src/routes/departments.route"));
+    router.use("/", authenticateToken, require("./src/routes/drivers.route"));
+    router.use("/", authenticateToken, require("./src/routes/feedbacks.route"));
+    router.use("/", authenticateToken, require("./src/routes/notifications.route"));
+    router.use("/", authenticateToken, require("./src/routes/vehicles.route"));
 
 });
 
