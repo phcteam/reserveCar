@@ -23,7 +23,7 @@ function Header() {
                 src={logo}
                 alt="ระบบจองรถ AM"
                 style={{ height: "50px", marginRight: "10px" }}
-              />{" "}
+              />
               ระบบจองรถ AM
             </Link>
           </h4>

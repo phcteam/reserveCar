@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
 import "./Login.css";
 
 function Login() {
-  const BaseUrl = "http://localhost:3000/reserveCar/";
+  const BaseUrl = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
 
   // ตรวจสอบ token เมื่อโหลดหน้า

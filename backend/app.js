@@ -12,9 +12,9 @@ const version = "1.0.0";
 const authenticateToken = require('./src/middleware/authenticateToken.middleware');
 
 
-app.group(`/${apiName}/`, (router) => {
+app.group(`/api/${apiName}/`, (router) => {
     router.get("/", (req, res) => {
-        res.json({ message: `RESTful API version ${version} For Test` });
+        res.json({ message: `RESTful API version ${version} For ${apiName}` });
     });
  
     router.use("/auth", require("./src/routes/auth/auth.route"));
