@@ -1,30 +1,64 @@
+// import React from "react";
+// import { Link } from "react-router-dom";
+
+
+const name = localStorage.getItem("name");
+
 const navbarMenu = [
   {
-    Dahsboard: {
+    Admin: {
       subMenu: [
         {
-          name: "Dashboard",
-          link: "/dashboard",
+          name: "จัดการผู้ใช้งาน",
+          link: "/admin/usersManagement",
           hr: false,
-          role: ["admin", "auditor", "user_freeze", "user_pack", "user_planner", "user_prepare", "user_pst", "user_select"]
+          role: ["admin"]
         },
         {
-          name: "Check Weight Real Time",
-          link: "/realtimechart",
+          name: "จัดการพนักงานขับรถ",
+          link: "/admin/driverManagement",
           hr: false,
-          role: ["admin", "auditor", "user_freeze", "user_pack", "user_planner", "user_prepare", "user_pst", "user_select"]
+          role: ["admin"]
         },
         {
-          name: "Check Weight Sammary",
-          link: "/Check Weight Sammary",
+          name: "จัดการรถ",
+          link: "/admin/vehiclesManagement",
           hr: false,
-          role: ["admin", "auditor", "user_freeze", "user_pack", "user_planner", "user_prepare", "user_pst", "user_select"]
+          role: ["admin"]
+        },
+        {
+          name: "จัดการคิวรถ",
+          link: "/admin/vehiclesQueue",
+          hr: true,
+          role: ["admin"]
+        },
+        {
+          name: "รายงาน",
+          link: "/admin/reports",
+          hr: false,
+          role: ["admin"]
         },
       ],
-      firstRole: ["admin", "auditor", "user_freeze", "user_pack", "user_planner", "user_prepare", "user_pst", "user_select"]
+      firstRole: ["admin"]
     },
- 
+    [name]: {  // ใช้ค่า name จาก localStorage เพื่อสร้างชื่อเมนู
+      subMenu: [
+        {
+          name: "จัดการผู้ใช้งาน",
+          link: "/usersManagement",
+          hr: true,
+          role: ["admin", "user"]
+        },
+        {
+          name: "ออกจากระบบ",
+          hr: false,
+          role: ["admin", "user"],
+          action: "logout"
+        },
+      ],
+      firstRole: ["admin", "user"]
+    },
   }
-]
+];
 
 export default navbarMenu;

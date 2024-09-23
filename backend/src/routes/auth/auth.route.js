@@ -33,10 +33,11 @@ router.post('/login', async (req, res) => {
     res.json({
         status: "OK",
         token,
-        id: user.id,  // หรือใช้ user.id ขึ้นอยู่กับโครงสร้างฐานข้อมูลของคุณ
+        id: user.id,
         username: user.username,
-        fname: user.fname,
-        lname: user.lname
+        name: user.name,
+        role: user.role
+
     });
 });
 
