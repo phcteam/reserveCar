@@ -7,7 +7,7 @@ const db = require('../../models/index.model');
 const Users = db.users;
 
 router.post('/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, name, email, phone, status, role } = req.body;
 
     const userExist = await Users.findOne({ where: { username } });
     if (userExist) return res.status(400).json({ message: 'User already exists' });
@@ -15,8 +15,8 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    await Users.create({ username, password: hashedPassword });
-    res.json({ message: 'User registered successfully' });
+    await Users.create({ username, password: hashedPassword, name, email, phone, status, role });
+    res.json({ status: 'User registered successfully' });
 });
 
 router.post('/login', async (req, res) => {
@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     res.json({
-        status: "OK",
+        status: "User login successfully",
         token,
         id: user.id,
         username: user.username,

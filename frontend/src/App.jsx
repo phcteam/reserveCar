@@ -5,6 +5,7 @@ import Layout from "./components/Layout";
 import Main from "./pages/Main";
 import Login from "./pages/authentication/Login";
 import UsersManagement from "./pages/UsersManagement";
+import Register from "./pages/authentication/Register";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -13,6 +14,8 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
         <Route path="/" element={token ? <Main /> : <Navigate to="/login" />} />
 
         <Route

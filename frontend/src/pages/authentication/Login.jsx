@@ -38,7 +38,7 @@ function Login() {
 
       const responseData = await response.json();
 
-      if (responseData.status === "OK") {
+      if (responseData.status === "User login successfully") {
         alert("เข้าสู่ระบบ สำเร็จ");
         localStorage.setItem("token", responseData.token);
         localStorage.setItem("id", responseData.id);
@@ -57,38 +57,6 @@ function Login() {
   };
 
   return (
-    // <div className="m-5">
-    //   <div className="card">
-    //     <form onSubmit={handleSubmit} className="card-body">
-    //       <h2>
-    //         <strong>ลงชื่อเข้าใช้</strong>
-    //       </h2>
-    //       <div className="mb-3">
-    //         <label>Username</label>
-    //         <input
-    //           type="text"
-    //           className="form-control"
-    //           name="username"
-    //           required
-    //         />
-    //       </div>
-    //       <div className="mb-3">
-    //         <label>Password</label>
-    //         <input
-    //           type="password"
-    //           className="form-control"
-    //           name="password"
-    //           required
-    //         />
-    //       </div>
-    //       <div className="text-center">
-    //         <button type="submit" className="btn btn-success w-100">
-    //           Login
-    //         </button>
-    //       </div>
-    //     </form>
-    //   </div>
-    // </div>
     <>
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
@@ -136,17 +104,17 @@ function Login() {
                         </button>
                       </div>
 
-                      {/* <div className="d-flex align-items-center justify-content-center pb-4">
-                        <p className="mb-0 me-2">Do not have an account?</p>
-                        <button
+                      <div className="d-flex align-items-center justify-content-center pb-4">
+                        <p className="mb-0 me-2">มีบัญชีแล้วหรือยัง ?</p>
+                        <a href="/register"
                           type="button"
                           data-mdb-button-init
                           data-mdb-ripple-init
                           className="btn btn-outline-danger"
                         >
-                          Create new
-                        </button>
-                      </div> */}
+                          สร้างบัญชีใหม่
+                        </a>
+                      </div>
                     </form>
                   </div>
                 </div>

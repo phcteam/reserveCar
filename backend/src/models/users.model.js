@@ -18,10 +18,12 @@ module.exports = function (sequelize, Sequelize) {
             role: {
                 type: DataTypes.STRING,
             },
+            phone: {
+                type: DataTypes.STRING,
+            },
             status: {
                 type: DataTypes.STRING,
             },
-
         },
         {
             createdAt: "created_at",
