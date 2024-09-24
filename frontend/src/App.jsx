@@ -6,6 +6,7 @@ import Main from "./pages/Main";
 import Login from "./pages/authentication/Login";
 import UsersManagement from "./pages/UsersManagement";
 import Register from "./pages/authentication/Register";
+import ReserveCar from "./pages/ReserveCar";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -23,6 +24,11 @@ function App() {
           element={
             token ? <UsersManagement /> : <Navigate to="/usersManagement" />
           }
+        />
+
+        <Route
+          path="/reserveCar"
+          element={token ? <ReserveCar /> : <Navigate to="/reserveCar" />}
         />
       </Routes>
     </Layout>

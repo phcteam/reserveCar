@@ -10,8 +10,8 @@ module.exports = {
     const driver_id = req.query.driver_id;
     const vehicle_id = req.query.vehicle_id;
     const user_id = req.query.user_id;
-    const start_location = req.query.start_location;
-    const end_location = req.query.end_location;
+    const latitude = req.query.latitude;
+    const longitude = req.query.longitude;
     const start_time = req.query.start_time;
     const end_time = req.query.end_time;
     const prossengers = req.query.prossengers;
@@ -25,8 +25,8 @@ module.exports = {
     if (driver_id) conditions.driver_id = { [Op.like]: `%${driver_id}%` };
     if (vehicle_id) conditions.vehicle_id = { [Op.like]: `%${vehicle_id}%` };
     if (user_id) conditions.user_id = { [Op.like]: `%${user_id}%` };
-    if (start_location) conditions.start_location = { [Op.like]: `%${start_location}%` };
-    if (end_location) conditions.end_location = { [Op.like]: `%${end_location}%` };
+    if (latitude) conditions.latitude = { [Op.like]: `%${latitude}%` };
+    if (longitude) conditions.longitude = { [Op.like]: `%${longitude}%` };
     if (start_time) conditions.start_time = { [Op.like]: `%${start_time}%` };
     if (end_time) conditions.end_time = { [Op.like]: `%${end_time}%` };
     if (prossengers) conditions.prossengers = { [Op.like]: `%${prossengers}%` };
@@ -78,8 +78,8 @@ module.exports = {
       driver_id: req.body.driver_id,
       vehicle_id: req.body.vehicle_id,
       user_id: req.body.user_id,
-      start_location: req.body.start_location,
-      end_location: req.body.end_location,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
       start_time: req.body.start_time,
       end_time: req.body.end_time,
       prossengers: req.body.prossengers,
@@ -107,8 +107,8 @@ module.exports = {
       driver_id: req.body.driver_id,
       vehicle_id: req.body.vehicle_id,
       user_id: req.body.user_id,
-      start_location: req.body.start_location,
-      end_location: req.body.end_location,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
       start_time: req.body.start_time,
       end_time: req.body.end_time,
       prossengers: req.body.prossengers,

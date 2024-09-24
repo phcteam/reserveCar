@@ -18,7 +18,7 @@ function Main() {
       <div className="mt-4">
         <div className="row">
           <div className="col-md-3 mb-3">
-            <a
+            <a href="/reserveCar"
               className="btn btn-primary card d-flex flex-column align-items-center justify-content-center"
               style={{ height: "200px" }}
             >

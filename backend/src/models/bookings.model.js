@@ -12,17 +12,17 @@ module.exports = function (sequelize, Sequelize) {
             user_id: {
                 type: DataTypes.INTEGER,
             },
-            start_location: {
+            latitude: {
                 type: DataTypes.STRING,
             },
-            end_location: {
+            longitude: {
                 type: DataTypes.STRING,
             },
             start_time: {
-                type: DataTypes.TIME,
+                type: DataTypes.DATE,
             },
             end_time: {
-                type: DataTypes.TIME,
+                type: DataTypes.DATE,
             },
             prossengers: {
                 type: DataTypes.INTEGER,
