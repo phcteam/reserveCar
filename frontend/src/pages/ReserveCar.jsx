@@ -17,6 +17,7 @@ const center = {
 };
 
 const userId = localStorage.getItem("id");
+const token = localStorage.getItem("token");
 
 const BaseUrl = import.meta.env.VITE_API_URL;
 const GoogleMapToken = import.meta.env.VITE_GOOGLE_MAP_TOKEN;
@@ -28,6 +29,7 @@ function ReserveCar() {
   const [driverId, setDriverId] = useState("");
   const [vehicleId, setVehicleId] = useState("");
   const [startTime, setStartTime] = useState("");
+  const [location, setLocation] = useState("");
   const [endTime, setEndTime] = useState("");
   const [passengers, setPassengers] = useState(1);
   const [status, setStatus] = useState("pending");
@@ -56,14 +58,16 @@ function ReserveCar() {
   const handleSave = async (event) => {
     event.preventDefault();
     if (selectedPosition) {
-      const response = await fetch(`${BaseUrl}/booking`, {
+      const response = await fetch(`${BaseUrl}/bookings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           latitude: selectedPosition.lat,
           longitude: selectedPosition.lng,
+          location: location,
           driver_id: driverId,
           vehicle_id: vehicleId,
           user_id: userId,
@@ -74,9 +78,15 @@ function ReserveCar() {
         }),
       });
 
-      const data = await response.json();
-      console.log("Response:", data);
-      alert("บันทึกสถานที่สำเร็จแล้ว!");
+      const responseData = await response.json();
+      console.log(token);
+
+      if (responseData.status === "created") {
+        alert("จองสำเร็จ ");
+        window.location = "/";
+      } else {
+        alert("ข้อมูลไม่ถูกต้อง");
+      }
     } else {
       alert("โปรดเลือกสถานที่!");
     }
@@ -113,6 +123,15 @@ function ReserveCar() {
         </GoogleMap>
       </LoadScript>
       <form onSubmit={handleSave}>
+        <label htmlFor="start_time">ระบุสถานที่</label>
+        <input
+          id="location"
+          placeholder="ระบุสถานที่"
+          type="text"
+          onChange={(e) => setLocation(e.target.value)}
+          className="form-control"
+          required
+        />
         <div className="row mb-2 mt-2">
           <div className="col">
             <label htmlFor="driver_id">คนขับรถ:</label>
@@ -124,6 +143,8 @@ function ReserveCar() {
               className="form-select"
             >
               <option value="">เลือกคนขับ</option>
+              <option value="1">1</option>
+
               {/* เพิ่มตัวเลือกคนขับที่นี่ */}
             </select>
           </div>
@@ -137,6 +158,8 @@ function ReserveCar() {
               className="form-select"
             >
               <option value="">เลือกรถ</option>
+              <option value="1">1</option>
+
               {/* เพิ่มตัวเลือกรถที่นี่ */}
             </select>
           </div>
@@ -150,7 +173,7 @@ function ReserveCar() {
               id="start_time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="form-select"
+              className="form-control"
               required
             />
           </div>
@@ -161,7 +184,7 @@ function ReserveCar() {
               id="end_time"
               value={endTime}
               onChange={(e) => setEndTime(e.target.value)}
-              className="form-select"
+              className="form-control"
               required
             />
           </div>
@@ -196,6 +219,7 @@ function ReserveCar() {
           บันทึกสถานที่
         </button>
       </form>
+      <br />
     </div>
   );
 }

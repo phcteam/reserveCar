@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTicket, faTruckFast } from "@fortawesome/free-solid-svg-icons"; // นำเข้าไอคอนรถ
+import Booking from "../components/Bookings/Booking";
 
 function Main() {
   return (
@@ -18,8 +19,9 @@ function Main() {
       <div className="mt-4">
         <div className="row">
           <div className="col-md-3 mb-3">
-            <a href="/reserveCar"
-              className="btn btn-primary card d-flex flex-column align-items-center justify-content-center"
+            <a
+              href="/reserveCar"
+              className="btn btn-secondary card d-flex flex-column align-items-center justify-content-center"
               style={{ height: "200px" }}
             >
               <FontAwesomeIcon icon={faTicket} size="3x" className="mb-2" />
@@ -29,7 +31,7 @@ function Main() {
 
           <div className="col-md-3 mb-3">
             <a
-              className="btn btn-success card d-flex align-items-center justify-content-center"
+              className="btn btn-secondary card d-flex align-items-center justify-content-center"
               style={{ height: "200px" }}
             >
               <FontAwesomeIcon icon={faTruckFast} size="3x" className="mb-2" />
@@ -37,6 +39,8 @@ function Main() {
               <h4>เดินทาง</h4>
             </a>
           </div>
+
+          <Booking />
         </div>
       </div>
     </div>

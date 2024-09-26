@@ -18,6 +18,9 @@ module.exports = function (sequelize, Sequelize) {
             longitude: {
                 type: DataTypes.STRING,
             },
+            location: {
+                type: DataTypes.STRING,
+            },
             start_time: {
                 type: DataTypes.DATE,
             },
