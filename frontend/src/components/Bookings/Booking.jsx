@@ -1,9 +1,52 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import FormatDateTime from "../FormatDateTime";
+import GetRemainingTime from "../GetRemainingTime";
 
-function Booking() {
+function Booking({ userId, token }) {
+  const [bookings, setBookings] = useState([]);
+
+  var currentTime = FormatDateTime(new Date());
+
+  useEffect(() => {
+    if (userId && token) {
+      fetch(
+        `http://localhost:3007/api/reserveCar/bookings?user_id=${userId}&start_time=${currentTime}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setBookings(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching bookings:", error);
+        });
+    }
+  }, [userId, token, currentTime]);
+
   return (
-    <div>Booking</div>
-  )
+    <div className="card card-body">
+      <h4>รายการการจอง</h4>
+      {bookings.length > 0 ? (
+        <div>
+          {bookings.map((booking) => (
+            <div className="card card-body mb-2" key={booking.id}>
+              หมายเลขที่จอง: {booking.id} <br />
+              ทะเบียนรถ: {booking.vehicle_id} <br />
+              เวลาเดินทาง: {FormatDateTime(new Date(booking.start_time))}
+              <hr />
+              <GetRemainingTime startTime={booking.start_time} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>ไม่มีการจองในขณะนี้</p>
+      )}
+    </div>
+  );
 }
 
-export default Booking
+export default Booking;

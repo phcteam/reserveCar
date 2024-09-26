@@ -3,6 +3,9 @@ import { faTicket, faTruckFast } from "@fortawesome/free-solid-svg-icons"; // �
 import Booking from "../components/Bookings/Booking";
 
 function Main() {
+  const userId = localStorage.getItem("id");
+  const token = localStorage.getItem("token");
+
   return (
     <div>
       <h3>ยินดีต้อนรับเข้าสู่ ระบบจองรถ AM</h3>
@@ -39,10 +42,10 @@ function Main() {
               <h4>เดินทาง</h4>
             </a>
           </div>
-
-          <Booking />
         </div>
       </div>
+
+      <Booking userId={userId} token={token} />
     </div>
   );
 }

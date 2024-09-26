@@ -13,7 +13,6 @@ module.exports = {
     const latitude = req.query.latitude;
     const longitude = req.query.longitude;
     const location = req.query.location;
-
     const start_time = req.query.start_time;
     const end_time = req.query.end_time;
     const prossengers = req.query.prossengers;
@@ -30,7 +29,12 @@ module.exports = {
     if (latitude) conditions.latitude = { [Op.like]: `%${latitude}%` };
     if (longitude) conditions.longitude = { [Op.like]: `%${longitude}%` };
     if (location) conditions.location = { [Op.like]: `%${location}%` };
-    if (start_time) conditions.start_time = { [Op.like]: `%${start_time}%` };
+
+
+    if (start_time) {
+      conditions.start_time = { [Op.gte]: new Date(start_time) };
+    }
+
     if (end_time) conditions.end_time = { [Op.like]: `%${end_time}%` };
     if (prossengers) conditions.prossengers = { [Op.like]: `%${prossengers}%` };
     if (status) conditions.status = { [Op.like]: `%${status}%` };
