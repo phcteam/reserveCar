@@ -68,7 +68,7 @@ module.exports = {
     },
 
     create: async function (req, res) {
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const hashedPassword = await bcrypt.hash(req.body.password);
         var tmpData = {
             name: req.body.booking_id,
             username: req.body.user_id,

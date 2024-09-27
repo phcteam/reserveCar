@@ -3,20 +3,18 @@ import FormatDateTime from "../FormatDateTime";
 import GetRemainingTime from "../GetRemainingTime";
 
 function Booking({ userId, token }) {
+  const BaseUrl = import.meta.env.VITE_API_URL;
   const [bookings, setBookings] = useState([]);
 
   var currentTime = FormatDateTime(new Date());
 
   useEffect(() => {
     if (userId && token) {
-      fetch(
-        `http://localhost:3007/api/reserveCar/bookings?user_id=${userId}&start_time=${currentTime}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      fetch(`${BaseUrl}/bookings?user_id=${userId}&start_time=${currentTime}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((response) => response.json())
         .then((data) => {
           setBookings(data);
@@ -25,7 +23,7 @@ function Booking({ userId, token }) {
           console.error("Error fetching bookings:", error);
         });
     }
-  }, [userId, token, currentTime]);
+  }, [BaseUrl, userId, token, currentTime]);
 
   return (
     <div className="card card-body">
