@@ -63,7 +63,7 @@ function UsersManagement() {
   };
 
   const handleUpdateUser = () => {
-    fetch(`${BaseUrl}users/${editingUser.id}`, {
+    fetch(`${BaseUrl}/users/${editingUser.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -200,7 +200,13 @@ function UsersManagement() {
                     แก้ไข
                   </button>
                   <button
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => {
+                      if (
+                        window.confirm("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?")
+                      ) {
+                        handleDelete(user.id);
+                      }
+                    }}
                     className="btn btn-danger"
                   >
                     ลบ
@@ -212,42 +218,71 @@ function UsersManagement() {
         </table>
 
         {editingUser && (
-          <div className="modal">
-            <h4>แก้ไขผู้ใช้งาน</h4>
-            <input
-              type="text"
-              value={editingUser.name}
-              onChange={(e) =>
-                setEditingUser({ ...editingUser, name: e.target.value })
-              }
-            />
-            <input
-              type="email"
-              value={editingUser.email}
-              onChange={(e) =>
-                setEditingUser({ ...editingUser, email: e.target.value })
-              }
-            />
-            <select
-              value={editingUser.role}
-              onChange={(e) =>
-                setEditingUser({ ...editingUser, role: e.target.value })
-              }
-            >
-              <option value="User">User</option>
-              <option value="Admin">Admin</option>
-            </select>
-
-            <button onClick={handleUpdateUser} className="btn btn-primary">
-              บันทึก
-            </button>
-
-            <button
-              onClick={() => setEditingUser(null)}
-              className="btn btn-secondary"
-            >
-              ยกเลิก
-            </button>
+          <div
+            className="modal fade show"
+            style={{ display: "block" }}
+            id="EditUserModal"
+            tabIndex="-1"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">แก้ไขผู้ใช้งาน</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setEditingUser(null)}
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <label htmlFor="name">ชื่อ</label>
+                  <input
+                    type="text"
+                    className="form-control mb-2"
+                    value={editingUser.name}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, name: e.target.value })
+                    }
+                  />
+                  <label htmlFor="email">E-Mail</label>
+                  <input
+                    type="email"
+                    className="form-control mb-2"
+                    value={editingUser.email}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, email: e.target.value })
+                    }
+                  />
+                  <label htmlFor="role">สิทธิ์การใช้งาน</label>
+                  <select
+                    className="form-select mb-2"
+                    value={editingUser.role}
+                    onChange={(e) =>
+                      setEditingUser({ ...editingUser, role: e.target.value })
+                    }
+                  >
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setEditingUser(null)}
+                  >
+                    ยกเลิก
+                  </button>
+                  <button
+                    onClick={handleUpdateUser}
+                    className="btn btn-primary"
+                  >
+                    บันทึก
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
