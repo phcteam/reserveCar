@@ -39,6 +39,7 @@ function Booking({ userId, token }) {
               เวลาเดินทาง: {FormatDateTime(new Date(booking.start_time))}
               <hr />
               <GetRemainingTime startTime={booking.start_time} />
+              <button className="btn btn-outline-primary">พร้อมเดินทาง</button>
             </div>
           ))}
         </div>

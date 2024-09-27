@@ -1,20 +1,4 @@
-// function GetRemainingTime(startTime) {
-//     const now = new Date();
-//     const start = new Date(startTime);
-//     const difference = start - now;
-
-//     if (difference <= 0) return "หมดเวลา";
-
-//     const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-//     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-//     const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-//     return `เหลือเวลา ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`;
-//   }
-
-//   export default GetRemainingTime;
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function GetRemainingTime({ startTime }) {
   const [remainingTime, setRemainingTime] = useState("");

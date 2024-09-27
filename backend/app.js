@@ -25,6 +25,8 @@ app.group(`/api/${apiName}/`, (router) => {
     router.use("/", authenticateToken, require("./src/routes/feedbacks.route"));
     router.use("/", authenticateToken, require("./src/routes/notifications.route"));
     router.use("/", authenticateToken, require("./src/routes/vehicles.route"));
+    router.use("/", authenticateToken, require("./src/routes/users.route"));
+
 
 });
 
