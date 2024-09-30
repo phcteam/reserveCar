@@ -7,8 +7,8 @@ const func = db.Sequelize;
 
 module.exports = {
   findall: async function (req, res) {
-    const model = req.query.model;
-    const licenseNumber = req.query.licenseNumber;
+    const vehicleName = req.query.vehicleName;
+    const plateNumber = req.query.plateNumber;
     const capacity = req.query.capacity;
     const status = req.query.status;
 
@@ -16,8 +16,8 @@ module.exports = {
     const page = req.query.page;
 
     var conditions = {};
-    if (model) conditions.model = { [Op.like]: `%${model}%` };
-    if (licenseNumber) conditions.licenseNumber = { [Op.like]: `%${licenseNumber}%` };
+    if (vehicleName) conditions.vehicleName = { [Op.like]: `%${vehicleName}%` };
+    if (plateNumber) conditions.plateNumber = { [Op.like]: `%${plateNumber}%` };
     if (capacity) conditions.capacity = { [Op.like]: `%${capacity}%` };
     if (status) conditions.status = { [Op.like]: `%${status}%` };
 
@@ -64,8 +64,8 @@ module.exports = {
 
   create: async function (req, res) {
     var tmpData = {
-      model: req.body.model,
-      licenseNumber: req.body.licenseNumber,
+      vehicleName: req.body.vehicleName,
+      plateNumber: req.body.plateNumber,
       capacity: req.body.capacity,
       status: req.body.status,
     };
@@ -88,8 +88,8 @@ module.exports = {
     console.log("Todo " + req.params.id + " updated");
     const id = req.params.id;
     var tmpData = {
-      model: req.body.model,
-      licenseNumber: req.body.licenseNumber,
+      vehicleName: req.body.vehicleName,
+      plateNumber: req.body.plateNumber,
       capacity: req.body.capacity,
       status: req.body.status,
     };
@@ -129,7 +129,4 @@ module.exports = {
         });
       });
   },
-
-
-
 };

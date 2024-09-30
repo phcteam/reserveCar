@@ -8,6 +8,7 @@ import UsersManagement from "./pages/Admin/UsersManagement";
 import Register from "./pages/authentication/Register";
 import ReserveCar from "./pages/ReserveCar";
 import DriverManagement from "./pages/Admin/DriverManagement";
+import VehiclesManagement from "./pages/Admin/VehiclesManagement";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -31,6 +32,16 @@ function App() {
           path="/admin/driverManagement"
           element={
             token ? <DriverManagement /> : <Navigate to="/driverManagement" />
+          }
+        />
+        <Route
+          path="/admin/vehiclesManagement"
+          element={
+            token ? (
+              <VehiclesManagement />
+            ) : (
+              <Navigate to="/vehiclesManagement" />
+            )
           }
         />
 

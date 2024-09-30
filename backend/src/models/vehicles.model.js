@@ -3,10 +3,10 @@ module.exports = function (sequelize, Sequelize) {
     const Vehicles = sequelize.define(
         "vehicles",
         {
-            model: {
+            vehicleName: {
                 type: DataTypes.STRING,
             },
-            licenseNumber: {
+            plateNumber: {
                 type: DataTypes.STRING,
             },
             capacity: {
