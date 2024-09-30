@@ -21,6 +21,9 @@ module.exports = function (sequelize, Sequelize) {
             phone: {
                 type: DataTypes.STRING,
             },
+            department_id: {
+                type: DataTypes.INTEGER,
+            },
             status: {
                 type: DataTypes.STRING,
             },

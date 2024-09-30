@@ -86,38 +86,6 @@ function VehiclesManagement() {
     setEditingVehicle(vehicle);
   };
 
-  const handleUpdateVehicle = () => {
-    fetch(`${BaseUrl}/vehicles/${editingVehicle.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(editingVehicle),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.status === 204 ? null : response.json();
-      })
-      .then((updatedVehicle) => {
-        if (updatedVehicle && updatedVehicle.id) {
-          const updatedVehicles = vehicles.map((vehicle) =>
-            vehicle.id === updatedVehicle.id ? updatedVehicle : vehicle
-          );
-          setVehicles(updatedVehicles);
-        } else {
-          console.warn(
-            "No updated vehicle data returned, consider refetching the vehicle list."
-          );
-          fetchVehicles();
-        }
-        setEditingVehicle(null);
-      })
-      .catch((error) => console.error("Error updating vehicle:", error));
-  };
-
   const fetchVehicles = () => {
     fetch(`${BaseUrl}/vehicles`, {
       headers: {
@@ -127,6 +95,22 @@ function VehiclesManagement() {
       .then((response) => response.json())
       .then((data) => setVehicles(data))
       .catch((error) => console.error("Error fetching vehicles:", error));
+  };
+
+  const handleUpdateVehicle = () => {
+    fetch(`${BaseUrl}/vehicles/${editingVehicle.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(editingVehicle),
+    })
+      .then(() => {
+        fetchVehicles();
+        setEditingVehicle(null);
+      })
+      .catch((error) => console.error("Error updating driver:", error));
   };
 
   if (role === "admin") {

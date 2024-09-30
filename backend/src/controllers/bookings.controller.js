@@ -5,6 +5,10 @@ const Database = db.bookings;
 const Op = db.Sequelize.Op;
 const func = db.Sequelize;
 
+Database.belongsTo(db.drivers, { foreignKey: 'driver_id' });
+Database.belongsTo(db.users, { foreignKey: 'user_id' });
+Database.belongsTo(db.vehicles, { foreignKey: 'vehicle_id' });
+
 module.exports = {
   findall: async function (req, res) {
     const driver_id = req.query.driver_id;
@@ -30,7 +34,6 @@ module.exports = {
     if (longitude) conditions.longitude = { [Op.like]: `%${longitude}%` };
     if (location) conditions.location = { [Op.like]: `%${location}%` };
 
-
     if (start_time) {
       conditions.start_time = { [Op.gte]: new Date(start_time) };
     }
@@ -47,6 +50,17 @@ module.exports = {
       limit: parseInt(lim, 10),
       offset: parseInt(offs, 0),
       order: [["id", "ASC"]],
+      include: [
+        {
+          model: db.drivers,
+        },
+        {
+          model: db.users
+        },
+        {
+          model: db.vehicles
+        }
+      ],
 
     })
       .then((data) => {
@@ -65,8 +79,20 @@ module.exports = {
 
   findone: async function (req, res) {
     const id = req.params.id;
+    await Database.findByPk(id, {
+      include: [
+        {
+          model: db.drivers,
+        },
+        {
+          model: db.users
+        },
+        {
+          model: db.vehicles
+        }
+      ],
+    })
 
-    await Database.findByPk(id)
       .then((data) => {
         res.status(200);
         res.send(data);

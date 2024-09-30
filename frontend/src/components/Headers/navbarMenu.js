@@ -21,14 +21,14 @@ const navbarMenu = [
           role: ["admin"]
         },
         {
-          name: "จัดการรถ",
+          name: "จัดการยานพาหนะ",
           link: "/admin/vehiclesManagement",
           hr: false,
           role: ["admin"]
         },
         {
           name: "จัดการคิวรถ",
-          link: "/admin/vehiclesQueue",
+          link: "/admin/vehiclesQueueManagement",
           hr: true,
           role: ["admin"]
         },

@@ -5,9 +5,12 @@ const Database = db.users;
 const Op = db.Sequelize.Op;
 const bcrypt = require('bcryptjs');
 
+
+Database.belongsTo(db.depaertments, { foreignKey: 'department_id' });
+
 module.exports = {
     findall: async function (req, res) {
-        const { name, username, email, role, phone, status, limit, page } = req.query;
+        const { name, username, email, role, phone, department_id, status, limit, page } = req.query;
 
         const conditions = {};
         if (name) conditions.name = { [Op.like]: `%${name}%` };
@@ -15,6 +18,8 @@ module.exports = {
         if (email) conditions.email = { [Op.like]: `%${email}%` };
         if (role) conditions.role = { [Op.like]: `%${role}%` };
         if (phone) conditions.phone = { [Op.like]: `%${phone}%` };
+        if (department_id) conditions.department_id = { [Op.like]: department_id };
+
         if (status) conditions.status = { [Op.like]: `%${status}%` };
 
         const lim = limit ? parseInt(limit, 10) : 10;
@@ -26,6 +31,12 @@ module.exports = {
                 limit: lim,
                 offset: offs,
                 order: [["id", "ASC"]],
+                include: [
+                    {
+                        model: db.depaertments,
+                    },
+                ]
+
             });
             res.status(200).send(data);
         } catch (err) {
@@ -35,11 +46,17 @@ module.exports = {
         }
     },
 
-    findone: async function (req, res) {
+    findone: async function (req, res,) {
         const id = req.params.id;
-
         try {
-            const data = await Database.findByPk(id);
+            const data = await Database.findByPk(id, {
+                include: [
+                    {
+                        model: db.depaertments,
+                    },
+
+                ],
+            });
             res.status(200).send(data);
         } catch (err) {
             res.status(500).send({
@@ -111,4 +128,30 @@ module.exports = {
             });
         }
     },
+
+
+    verifyPassword: async function (req, res) {
+        try {
+            const id = req.params.id;
+            const { currentPassword } = req.body; // รับรหัสผ่านปัจจุบันจาก request body
+
+            // ดึงข้อมูลผู้ใช้จากฐานข้อมูลโดยใช้ ID
+            const user = await Database.findByPk(id);
+            if (!user) {
+                return res.status(404).json({ message: "ไม่พบผู้ใช้" });
+            }
+
+            // ตรวจสอบรหัสผ่านปัจจุบันกับรหัสผ่านที่เข้ารหัสในฐานข้อมูล
+            const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!passwordMatch) {
+                return res.status(401).json({ message: "รหัสผ่านปัจจุบันไม่ถูกต้อง" });
+            }
+
+            // หากรหัสผ่านถูกต้อง
+            return res.status(200).json({ message: "รหัสผ่านถูกต้อง" });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "เกิดข้อผิดพลาดในการตรวจสอบรหัสผ่าน" });
+        }
+    }
 };

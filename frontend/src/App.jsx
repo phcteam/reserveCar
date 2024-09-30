@@ -4,11 +4,12 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Main from "./pages/Main";
 import Login from "./pages/authentication/Login";
-import UsersManagement from "./pages/Admin/UsersManagement";
 import Register from "./pages/authentication/Register";
 import ReserveCar from "./pages/ReserveCar";
 import DriverManagement from "./pages/Admin/DriverManagement";
 import VehiclesManagement from "./pages/Admin/VehiclesManagement";
+import AdminUserManagement from "./pages/Admin/AdminUserManagement";
+import UsersManagement from "./pages/usersManagement";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -22,9 +23,17 @@ function App() {
         <Route path="/" element={token ? <Main /> : <Navigate to="/login" />} />
 
         <Route
-          path="/admin/usersManagement"
+          path="/usersManagement"
           element={
             token ? <UsersManagement /> : <Navigate to="/usersManagement" />
+          }
+        />
+
+        {/* Admin */}
+        <Route
+          path="/admin/usersManagement"
+          element={
+            token ? <AdminUserManagement /> : <Navigate to="/usersManagement" />
           }
         />
 
@@ -34,6 +43,7 @@ function App() {
             token ? <DriverManagement /> : <Navigate to="/driverManagement" />
           }
         />
+
         <Route
           path="/admin/vehiclesManagement"
           element={
@@ -44,6 +54,16 @@ function App() {
             )
           }
         />
+        {/* <Route
+          path="/admin/vehiclesQueueManagement"
+          element={
+            token ? (
+              <VehiclesQueueManagement />
+            ) : (
+              <Navigate to="/vehiclesQueueManagement" />
+            )
+          }
+        /> */}
 
         <Route
           path="/reserveCar"

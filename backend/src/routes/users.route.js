@@ -12,5 +12,8 @@ router.put(`/${urlname}/:id`, Controller.update);
 router.delete(`/${urlname}/:id`, Controller.delete);
 
 
+router.post(`/${urlname}/verify-password/:id`, Controller.verifyPassword);
+
+
 module.exports = router;
  
