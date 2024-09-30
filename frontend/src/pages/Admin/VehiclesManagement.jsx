@@ -9,7 +9,7 @@ function VehiclesManagement() {
   const [newVehicle, setNewVehicle] = useState({
     vehicleName: "",
     plateNumber: "",
-    status: "Available",
+    status: "Active",
   });
   const [editingVehicle, setEditingVehicle] = useState(null);
 
