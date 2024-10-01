@@ -5,6 +5,7 @@ import logo from "../../assets/logo.png";
 
 function Header() {
   const role = localStorage.getItem("role");
+  
   const handleLogout = () => {
     localStorage.clear();
     window.location = "/login";

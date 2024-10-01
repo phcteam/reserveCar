@@ -137,13 +137,10 @@ function UsersManagement() {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <div>
       <h3>จัดการบัญชีผู้ใช้งาน</h3>
+      {error && <div className="text-danger mb-4">{error}</div>}
       {user ? (
         <div>
           <form onSubmit={handleSubmit}>

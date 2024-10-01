@@ -16,8 +16,13 @@ app.group(`/api/${apiName}/`, (router) => {
     router.get("/", (req, res) => {
         res.json({ message: `RESTful API version ${version} For ${apiName}` });
     });
- 
+
     router.use("/auth", require("./src/routes/auth/auth.route"));
+
+    // Checking Token 
+    router.get("/verify-token", authenticateToken, (req, res) => {
+        res.json({ message: "Token is valid", user: req.user });
+    });
 
     router.use("/", authenticateToken, require("./src/routes/bookings.route"));
     router.use("/", authenticateToken, require("./src/routes/departments.route"));
@@ -26,7 +31,6 @@ app.group(`/api/${apiName}/`, (router) => {
     router.use("/", authenticateToken, require("./src/routes/notifications.route"));
     router.use("/", authenticateToken, require("./src/routes/vehicles.route"));
     router.use("/", authenticateToken, require("./src/routes/users.route"));
-
 
 });
 
