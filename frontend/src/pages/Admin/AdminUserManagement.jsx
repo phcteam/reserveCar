@@ -5,39 +5,60 @@ function AdminUserManagement() {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  const [users, setUsers] = useState([]);
-  const [newUser, setNewUser] = useState({ name: "", email: "", role: "User" });
+  const [userList, setUserList] = useState([]);
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    role: "user", // หรือค่าเริ่มต้นอื่นๆ ที่คุณต้องการ
+    status: "active",
+  });
   const [editingUser, setEditingUser] = useState(null);
+  const [filters, setFilters] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    role: "",
+    status: "",
+    limit: 10,
+    page: 1,
+  });
 
   useEffect(() => {
     if (token && role === "admin") {
-      fetch(`${BaseUrl}/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setUsers(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching users:", error);
-        });
+      fetchUsers();
     }
-  }, [BaseUrl, token, role]);
+  }, [BaseUrl, token, role, filters]);
 
-  const handleDelete = (id) => {
-    fetch(`${BaseUrl}/users/${id}`, {
-      method: "DELETE",
+  const fetchUsers = () => {
+    const queryParams = new URLSearchParams(filters).toString();
+    fetch(`${BaseUrl}/users?${queryParams}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then(() => {
-        const updatedUsers = users.filter((user) => user.id !== id);
-        setUsers(updatedUsers);
+      .then((response) => response.json())
+      .then((data) => {
+        setUserList(data);
       })
-      .catch((error) => console.error("Error deleting user:", error));
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้งานนี้?")) {
+      fetch(`${BaseUrl}/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(() => {
+          setUserList(userList.filter((user) => user.id !== id));
+        })
+        .catch((error) => console.error("Error deleting user:", error));
+    }
   };
 
   const handleAddUser = () => {
@@ -50,15 +71,21 @@ function AdminUserManagement() {
       body: JSON.stringify(newUser),
     })
       .then((response) => response.json())
-      .then((user) => {
-        setUsers([...users, user]);
-        setNewUser({ name: "", email: "", role: "User" });
+      .then(() => {
+        fetchUsers();
+        setNewUser({
+          name: "",
+          email: "",
+          phone: "",
+          role: "user",
+          status: "active",
+        });
       })
       .catch((error) => console.error("Error adding user:", error));
   };
 
   const handleEditUser = (id) => {
-    const user = users.find((u) => u.id === id);
+    const user = userList.find((u) => u.id === id);
     setEditingUser(user);
   };
 
@@ -71,21 +98,17 @@ function AdminUserManagement() {
       },
       body: JSON.stringify(editingUser),
     })
-      .then((response) => response.json())
-      .then((updatedUser) => {
-        const updatedUsers = users.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user
-        );
-        setUsers(updatedUsers);
+      .then(() => {
+        fetchUsers();
         setEditingUser(null);
       })
       .catch((error) => console.error("Error updating user:", error));
   };
 
-  if (role == "admin") {
+  if (role === "admin") {
     return (
       <div>
-        <h3>จัดการบัญชีผู้ใช้งาน</h3>
+        <h3>จัดการผู้ใช้งาน</h3>
 
         <button
           type="button"
@@ -96,13 +119,11 @@ function AdminUserManagement() {
           เพิ่มผู้ใช้งาน
         </button>
 
-        <div className="modal fade" id="AddNewUserModal">
+        <div className="modal fade" id="AddNewUserModal" tabIndex="-1">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  เพิ่มผู้ใช้งาน
-                </h5>
+                <h5 className="modal-title">เพิ่มผู้ใช้งาน</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -121,19 +142,7 @@ function AdminUserManagement() {
                     setNewUser({ ...newUser, name: e.target.value })
                   }
                 />
-                <label htmlFor="username">Username</label>
-
-                <input
-                  type="text"
-                  placeholder="Username"
-                  value={newUser.username}
-                  className="form-control mb-2"
-                  onChange={(e) =>
-                    setNewUser({ ...newUser, username: e.target.value })
-                  }
-                />
-                <label htmlFor="email">E-Mail</label>
-
+                <label htmlFor="email">อีเมล</label>
                 <input
                   type="email"
                   placeholder="อีเมล"
@@ -143,8 +152,17 @@ function AdminUserManagement() {
                     setNewUser({ ...newUser, email: e.target.value })
                   }
                 />
-
-                <label htmlFor="role">Role</label>
+                <label htmlFor="phone">เบอร์โทรศัพท์</label>
+                <input
+                  type="text"
+                  placeholder="เบอร์โทรศัพท์"
+                  value={newUser.phone}
+                  className="form-control mb-2"
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, phone: e.target.value })
+                  }
+                />
+                <label htmlFor="role">บทบาท</label>
                 <select
                   value={newUser.role}
                   className="form-select mb-2"
@@ -152,8 +170,19 @@ function AdminUserManagement() {
                     setNewUser({ ...newUser, role: e.target.value })
                   }
                 >
-                  <option value="User">User</option>
-                  <option value="Admin">Admin</option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <label htmlFor="status">สถานะ</label>
+                <select
+                  value={newUser.status}
+                  className="form-select mb-2"
+                  onChange={(e) =>
+                    setNewUser({ ...newUser, status: e.target.value })
+                  }
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
                 </select>
               </div>
               <div className="modal-footer">
@@ -181,32 +210,31 @@ function AdminUserManagement() {
               <th>ลำดับ</th>
               <th>ชื่อ</th>
               <th>อีเมล</th>
-              <th>สิทธิ์การใช้งาน</th>
+              <th>เบอร์โทรศัพท์</th>
+              <th>บทบาท</th>
+              <th>สถานะ</th>
               <th className="text-center">การจัดการ</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user, index) => (
+            {userList.map((user, index) => (
               <tr key={user.id}>
                 <td>{index + 1}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
+                <td>{user.phone}</td>
                 <td>{user.role}</td>
+                <td>{user.status}</td>
                 <td className="text-center">
                   <button
                     onClick={() => handleEditUser(user.id)}
                     className="btn btn-warning mx-2"
+                    data-bs-toggle="modal"
                   >
                     แก้ไข
                   </button>
                   <button
-                    onClick={() => {
-                      if (
-                        window.confirm("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?")
-                      ) {
-                        handleDelete(user.id);
-                      }
-                    }}
+                    onClick={() => handleDelete(user.id)}
                     className="btn btn-danger"
                   >
                     ลบ
@@ -218,12 +246,7 @@ function AdminUserManagement() {
         </table>
 
         {editingUser && (
-          <div
-            className="modal fade show"
-            style={{ display: "block" }}
-            id="EditUserModal"
-            tabIndex="-1"
-          >
+          <div className="modal fade show" style={{ display: "block" }}>
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -242,28 +265,63 @@ function AdminUserManagement() {
                     className="form-control mb-2"
                     value={editingUser.name}
                     onChange={(e) =>
-                      setEditingUser({ ...editingUser, name: e.target.value })
+                      setEditingUser({
+                        ...editingUser,
+                        name: e.target.value,
+                      })
                     }
                   />
-                  <label htmlFor="email">E-Mail</label>
+                  <label htmlFor="email">อีเมล</label>
                   <input
                     type="email"
                     className="form-control mb-2"
                     value={editingUser.email}
                     onChange={(e) =>
-                      setEditingUser({ ...editingUser, email: e.target.value })
+                      setEditingUser({
+                        ...editingUser,
+                        email: e.target.value,
+                      })
                     }
                   />
-                  <label htmlFor="role">สิทธิ์การใช้งาน</label>
+                  <label htmlFor="phone">เบอร์โทรศัพท์</label>
+                  <input
+                    type="text"
+                    className="form-control mb-2"
+                    value={editingUser.phone}
+                    onChange={(e) =>
+                      setEditingUser({
+                        ...editingUser,
+                        phone: e.target.value,
+                      })
+                    }
+                  />
+                  <label htmlFor="role">บทบาท</label>
                   <select
                     className="form-select mb-2"
                     value={editingUser.role}
                     onChange={(e) =>
-                      setEditingUser({ ...editingUser, role: e.target.value })
+                      setEditingUser({
+                        ...editingUser,
+                        role: e.target.value,
+                      })
                     }
                   >
-                    <option value="User">User</option>
-                    <option value="Admin">Admin</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                  <label htmlFor="status">สถานะ</label>
+                  <select
+                    className="form-select mb-2"
+                    value={editingUser.status}
+                    onChange={(e) =>
+                      setEditingUser({
+                        ...editingUser,
+                        status: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                   </select>
                 </div>
                 <div className="modal-footer">
@@ -272,13 +330,13 @@ function AdminUserManagement() {
                     className="btn btn-secondary"
                     onClick={() => setEditingUser(null)}
                   >
-                    ยกเลิก
+                    ปิด
                   </button>
                   <button
                     onClick={handleUpdateUser}
-                    className="btn btn-primary"
+                    className="btn btn-outline-primary"
                   >
-                    บันทึก
+                    อัปเดตผู้ใช้งาน
                   </button>
                 </div>
               </div>
@@ -287,13 +345,9 @@ function AdminUserManagement() {
         )}
       </div>
     );
-  } else {
-    return (
-      <div>
-        <div className="alert alert-danger">คุณไม่ใช่ Admin </div>
-      </div>
-    );
   }
+
+  return null; // หรือสามารถแสดงอะไรได้เมื่อไม่ใช่ผู้ดูแลระบบ
 }
 
 export default AdminUserManagement;

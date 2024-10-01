@@ -67,7 +67,8 @@ module.exports = {
 
     create: async function (req, res) {
         try {
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const password = 'password';
+            const hashedPassword = await bcrypt.hash(password, 10);
             const tmpData = {
                 name: req.body.name,
                 username: req.body.username,
