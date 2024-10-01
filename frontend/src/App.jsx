@@ -10,6 +10,7 @@ import DriverManagement from "./pages/Admin/DriverManagement";
 import VehiclesManagement from "./pages/Admin/VehiclesManagement";
 import AdminUserManagement from "./pages/Admin/AdminUserManagement";
 import UsersManagement from "./pages/usersManagement";
+import Notification from "./pages/Notification";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -54,16 +55,16 @@ function App() {
             )
           }
         />
-        {/* <Route
+        <Route
           path="/admin/vehiclesQueueManagement"
           element={
             token ? (
-              <VehiclesQueueManagement />
+              <Notification />
             ) : (
               <Navigate to="/vehiclesQueueManagement" />
             )
           }
-        /> */}
+        />
 
         <Route
           path="/reserveCar"
