@@ -5,6 +5,12 @@ const Database = db.bookings;
 const Op = db.Sequelize.Op;
 const func = db.Sequelize;
 
+const notifyNewBooking = (io, data) => {
+  if (io) {
+    io.emit('newData', data);
+  }
+};
+
 Database.belongsTo(db.drivers, { foreignKey: 'driver_id' });
 Database.belongsTo(db.users, { foreignKey: 'user_id' });
 Database.belongsTo(db.vehicles, { foreignKey: 'vehicle_id' });
@@ -106,7 +112,7 @@ module.exports = {
       });
   },
 
-  create: async function (req, res) {
+  create: async function (req, res, io) {
     var tmpData = {
       driver_id: req.body.driver_id,
       vehicle_id: req.body.vehicle_id,
@@ -120,21 +126,17 @@ module.exports = {
       status: req.body.status,
     };
 
-    await Database.create(tmpData)
-      .then((data) => {
-        res.status(200);
-        res.send({ status: "created" });
-      })
-      .catch((err) => {
-        res.status(500);
-        res.send({
-          message:
-            err.message || "Some error occurred while creating the bookings.",
-        });
-      });
+    try {
+      const data = await Database.create(tmpData); // สร้างข้อมูลการจอง
+      notifyNewBooking(io, data); // ส่งข้อมูล booking ใหม่ไปยัง Socket.IO
+      res.send({ status: "created" });
+      return data; // คืนค่าข้อมูลการจอง
+    } catch (err) {
+      throw new Error(err.message || "Some error occurred while creating the bookings."); // ส่งข้อผิดพลาดกลับ
+    }
   },
 
-  update: async function (req, res) {
+  update: async function (req, res, io) { // เพิ่ม io เป็นพารามิเตอร์
     console.log("Todo " + req.params.id + " updated");
     const id = req.params.id;
     var tmpData = {
@@ -153,20 +155,18 @@ module.exports = {
     await Database.update(tmpData, {
       where: { id: id },
     })
-      .then((data) => {
-        res.status(200);
-        res.send({ status: "updated" });
+      .then(() => {
+        notifyNewBooking(io, tmpData); // ส่งข้อมูลใหม่ที่ถูกอัปเดต
+        res.status(200).send({ status: "updated" });
       })
       .catch((err) => {
-        res.status(500);
-        res.send({
-          message:
-            err.message || "Some error occurred while retrieving bookings.",
+        res.status(500).send({
+          message: err.message || "Some error occurred while updating bookings.",
         });
       });
   },
 
-  delete: async function (req, res) {
+  delete: async function (req, res, io) { // เพิ่ม io เป็นพารามิเตอร์
     console.log("Delete " + req.params.id);
     const id = req.params.id;
 
@@ -174,16 +174,15 @@ module.exports = {
       where: { id: id },
     })
       .then(() => {
-        res.status(200);
-        res.send({ status: "deleted" });
+        notifyNewBooking(io, { id, status: "deleted" }); // ส่ง ID ของ booking ที่ถูกลบ
+        res.status(200).send({ status: "deleted" });
       })
       .catch((err) => {
-        res.status(500);
-        res.send({
-          message:
-            err.message || "Some error occurred while deleting the bookings.",
+        res.status(500).send({
+          message: err.message || "Some error occurred while deleting the bookings.",
         });
       });
   },
+
 };
 
