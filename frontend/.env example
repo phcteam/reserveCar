@@ -1,5 +1,7 @@
 # .env
 VITE_API_URL=http://localhost:3000/api/reserveCar
+VITE_API_WEB_SOCKET=http://localhost:3000
+
 VITE_APP_NAME=ReserveCar
 
 VITE_GOOGLE_MAP_TOKEN=

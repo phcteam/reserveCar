@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const Notification = () => {
-  const BaseUrl = import.meta.env.VITE_API_URL;
+  const BaseWebSocket = import.meta.env.VITE_API_WEB_SOCKET;
   const token = localStorage.getItem("token");
 
   const [messages, setMessages] = useState([]);
@@ -11,7 +11,7 @@ const Notification = () => {
 
   useEffect(() => {
     // สร้างการเชื่อมต่อกับ Socket.IO server
-    const newSocket = io("http://localhost:3007");
+    const newSocket = io(`${BaseWebSocket}`);
 
     // รับข้อความจากเซิร์ฟเวอร์
     newSocket.on("message", (message) => {

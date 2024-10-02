@@ -37,7 +37,6 @@ app.group(`/api/${apiName}/`, (router) => {
 
 });
 
-
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -45,7 +44,6 @@ const io = new Server(server, {
         credentials: true,
     },
 });
-
 
 io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
