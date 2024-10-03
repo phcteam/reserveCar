@@ -26,8 +26,9 @@
 
 - **Frontend**: HTML5, CSS3, JavaScript (React.js)
 - **Backend**: Node.js, Express.js
-- **Database**: MySQL
+- **Database**: MySQL SQLServer
 - **Authentication**: JWT (JSON Web Token)
+- **Web Socket **: WEB SOCKET (socket.io)
 
 ---
 
