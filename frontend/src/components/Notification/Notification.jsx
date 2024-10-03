@@ -63,38 +63,50 @@ const Notification = () => {
         role="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        style={{ border: "none" }}
       >
         <FontAwesomeIcon icon={faBell} size="2x" />
         <span
           className="position-absolute start-75 translate-middle badge rounded-pill bg-danger"
-          style={({ fontSize: "7px" }, { top: "5px" })}
+          style={{ fontSize: "10px", top: "6px" }}
         >
           {notifications.length}
           <span className="visually-hidden">unread messages</span>
         </span>
       </a>
 
-      <ul className="dropdown-menu dropdown-menu-end">
+      <ul
+        className="dropdown-menu dropdown-menu-end"
+        style={{
+          width: "300px",
+          backgroundColor: "#eeeeee)", // โปร่งใส 70%
+          border: "none", // ไม่มีเส้นขอบ
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // เพิ่มเงาด้านหลัง
+        }}
+      >
         <p className="mx-2">การแจ้งเตือน</p>
-        <li className="card mx-1">
-          <a className="dropdown-item" href="#">
-            {notifications.length > 0 ? (
-              <ul>
-                {notifications.map((notification, index) => (
-                  <li key={index}>
-                    <strong>Booking ID:</strong> {notification.id} <br />
-                    <strong>Customer Name:</strong> {notification.customerName}{" "}
-                    <br />
-                    <strong>Booking Time:</strong> {notification.bookingTime}{" "}
-                    <br />
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No notifications available</p>
-            )}
-          </a>
-        </li>
+
+        {notifications.length > 0 ? (
+          <div>
+            {notifications.map((notification, index) => (
+              <a key={index} href="#" className="btn">
+                <li className="card p-2 md-2 text-start">
+                  <p>
+                    <strong>Booking ID:</strong> {notification.id}
+                  </p>
+                  <p>
+                    <strong>Customer Name:</strong> {notification.user_id}
+                  </p>
+                  <p>
+                    <strong>Booking Time:</strong> {notification.start_time}
+                  </p>
+                </li>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p className="card p-2 m-2">ไม่มีการแจ้งเตือน</p>
+        )}
       </ul>
     </div>
   );

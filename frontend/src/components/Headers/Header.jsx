@@ -16,7 +16,10 @@ function Header() {
     <>
       <nav
         className="navbar navbar-expand-lg"
-        style={{ backgroundColor: "#eb8799eb" }}
+        style={{
+          backgroundColor: "#eb8799eb",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        }}
       >
         <div className="container-fluid">
           <h4 className="navbar-brand mt-2">
