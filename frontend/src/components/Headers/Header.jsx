@@ -2,10 +2,11 @@ import React from "react";
 import navbarMenu from "./navbarMenu";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import Notification from "../Notification/Notification";
 
 function Header() {
   const role = localStorage.getItem("role");
-  
+
   const handleLogout = () => {
     localStorage.clear();
     window.location = "/login";
@@ -18,7 +19,7 @@ function Header() {
         style={{ backgroundColor: "#eb8799eb" }}
       >
         <div className="container-fluid">
-          <h4 className="navbar-brand mt-2 ">
+          <h4 className="navbar-brand mt-2">
             <Link to="/" style={{ textDecoration: "none", color: "#ffffff" }}>
               <img
                 src={logo}
@@ -28,20 +29,9 @@ function Header() {
               ระบบจองรถ AM
             </Link>
           </h4>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               {navbarMenu.map((menu, index) => (
                 <React.Fragment key={index}>
                   {Object.entries(menu).map(
@@ -95,6 +85,22 @@ function Header() {
               ))}
             </ul>
           </div>
+
+          <div className="ms-auto">
+            <Notification />
+          </div>
+
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
         </div>
       </nav>
     </>

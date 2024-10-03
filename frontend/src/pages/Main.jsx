@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTicket, faTruckFast } from "@fortawesome/free-solid-svg-icons"; // นำเข้าไอคอนรถ
 import Booking from "../components/Bookings/Booking";
-import Notification from "./Notification";
 
 function Main() {
   const userId = localStorage.getItem("id");
@@ -47,8 +46,6 @@ function Main() {
       </div>
 
       <Booking userId={userId} token={token} />
-
-      <Notification />
     </div>
   );
 }
