@@ -4,56 +4,56 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
 const webSocketURL = import.meta.env.VITE_API_WEB_SOCKET;
+const BaseUrl = import.meta.env.VITE_API_URL;
+const userId = localStorage.getItem("id");
+const token = localStorage.getItem("token");
 const socket = io(`${webSocketURL}`);
+
 const Notification = () => {
   const [notifications, setNotifications] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
-  // ฟังก์ชันสำหรับจัดเก็บการแจ้งเตือนใน localStorage
   const saveNotificationsToLocalStorage = (notifications) => {
     localStorage.setItem("notifications", JSON.stringify(notifications));
   };
 
-  // ฟังก์ชันสำหรับโหลดการแจ้งเตือนจาก localStorage
   const loadNotificationsFromLocalStorage = () => {
     const storedNotifications = localStorage.getItem("notifications");
     return storedNotifications ? JSON.parse(storedNotifications) : [];
   };
 
-  // ฟังก์ชันสำหรับตั้งเวลาให้ลบการแจ้งเตือนออกหลังจาก 3 นาที
-  const scheduleNotificationRemoval = () => {
-    setTimeout(() => {
-      localStorage.removeItem("notifications");
-      setNotifications([]);
-    }, 180000); // 180,000 milliseconds = 3 นาที
-  };
-
   useEffect(() => {
-    // โหลดการแจ้งเตือนจาก localStorage เมื่อเริ่มต้น
+    const currentTime = new Date().toISOString();
+
+    fetch(`${BaseUrl}/bookings?user_id=${userId}&start_time=${currentTime}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setBookings(data))
+      .catch((error) => {
+        console.error("Error fetching bookings:", error);
+        // Optionally update UI state to reflect the error
+      });
+
     const storedNotifications = loadNotificationsFromLocalStorage();
     setNotifications(storedNotifications);
 
-    // รับการแจ้งเตือนใหม่ผ่าน socket
     socket.on("newBooking", (data) => {
-      console.log("New booking received:", data);
       if (data) {
         setNotifications((prevNotifications) => {
           const updatedNotifications = [...prevNotifications, data];
-          saveNotificationsToLocalStorage(updatedNotifications); // บันทึกใน localStorage
+          saveNotificationsToLocalStorage(updatedNotifications);
           return updatedNotifications;
         });
-      } else {
-        console.warn("Received null or undefined data:", data);
       }
     });
 
-    // ตั้งเวลาลบการแจ้งเตือนหลังจาก 3 นาที
-    scheduleNotificationRemoval();
-
-    // Cleanup socket connection on unmount
     return () => {
       socket.off("newBooking");
     };
-  }, []);
+  }, [userId, token]);
 
   return (
     <div className="dropdown">
@@ -79,33 +79,30 @@ const Notification = () => {
         className="dropdown-menu dropdown-menu-end"
         style={{
           width: "300px",
-          backgroundColor: "#eeeeee)", // โปร่งใส 70%
-          border: "none", // ไม่มีเส้นขอบ
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // เพิ่มเงาด้านหลัง
+          backgroundColor: "#eeeeee",
+          border: "none",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
         <p className="mx-2">การแจ้งเตือน</p>
 
         {notifications.length > 0 ? (
-          <div>
-            {notifications.map((notification, index) => (
-              <a key={index} href="#" className="btn">
-                <li className="card p-2 md-2 text-start">
-                  <p>
-                    <strong>Booking ID:</strong> {notification.id}
-                  </p>
-                  <p>
-                    <strong>Customer Name:</strong> {notification.user_id}
-                  </p>
-                  <p>
-                    <strong>Booking Time:</strong> {notification.start_time}
-                  </p>
-                </li>
-              </a>
-            ))}
-          </div>
+          notifications.map((notification, index) => (
+            <div key={index} href="#">
+              <li className="card p-2 m-2 text-start">
+                <div className="row">
+                  <div className="col">
+                    <p> หมายเลขที่จอง: {notification.id} </p>
+                  </div>
+                  <div className="col col-auto">
+                    <a href="#">ดู</a>
+                  </div>
+                </div>
+              </li>
+            </div>
+          ))
         ) : (
-          <p className="card p-2 m-2">ไม่มีการแจ้งเตือน</p>
+          <p className="card p-2 m-2">ไม่มีการแจ้งเตือน ใหม่</p>
         )}
       </ul>
     </div>

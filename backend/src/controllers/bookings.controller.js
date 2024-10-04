@@ -2,6 +2,8 @@
 
 const db = require("../models/index.model");
 const Database = db.bookings;
+const Notification = db.notifications;
+
 const Op = db.Sequelize.Op;
 const func = db.Sequelize;
 
@@ -125,6 +127,15 @@ module.exports = {
       prossengers: req.body.prossengers,
       status: req.body.status,
     };
+
+    const notificationData = {
+      user_id: req.body.user_id,  // ใครได้รับการแจ้งเตือน
+      message: `Booking created by user ${req.body.user_id}`,
+      booking_id: bookingData.id, // อ้างอิง ID การจอง
+      status: 'unread',  // สถานะการแจ้งเตือน (ยังไม่อ่าน)
+    };
+
+    await Notification.create(notificationData);
 
     try {
       const data = await Database.create(tmpData); // สร้างข้อมูลการจอง
