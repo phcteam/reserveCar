@@ -52,12 +52,14 @@ module.exports = {
 
     var lim = limit ? limit : 10;
     var offs = page ? (page - 1) * lim : 0;
+    
+    const order = req.query.order ? req.query.order.toUpperCase() : "DESC"; 
 
     await Database.findAll({
       where: conditions,
       limit: parseInt(lim, 10),
       offset: parseInt(offs, 0),
-      order: [["id", "ASC"]],
+      order: [["id", order]],
       include: [
         {
           model: db.drivers,
@@ -128,14 +130,14 @@ module.exports = {
       status: req.body.status,
     };
 
-    const notificationData = {
-      user_id: req.body.user_id,  // ใครได้รับการแจ้งเตือน
-      message: `Booking created by user ${req.body.user_id}`,
-      booking_id: bookingData.id, // อ้างอิง ID การจอง
-      status: 'unread',  // สถานะการแจ้งเตือน (ยังไม่อ่าน)
-    };
+    // const notificationData = {
+    //   user_id: req.body.user_id,  // ใครได้รับการแจ้งเตือน
+    //   message: `Booking created by user ${req.body.user_id}`,
+    //   booking_id: bookingData.id, // อ้างอิง ID การจอง
+    //   status: 'unread',  // สถานะการแจ้งเตือน (ยังไม่อ่าน)
+    // };
 
-    await Notification.create(notificationData);
+    // await Notification.create(notificationData);
 
     try {
       const data = await Database.create(tmpData); // สร้างข้อมูลการจอง

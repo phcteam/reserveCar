@@ -21,12 +21,14 @@ module.exports = {
 
     var lim = limit ? limit : 10;
     var offs = page ? (page - 1) * lim : 0;
+    const order = req.query.order ? req.query.order.toUpperCase() : "DESC"; 
+
 
     await Database.findAll({
       where: conditions,
       limit: parseInt(lim, 10),
       offset: parseInt(offs, 0),
-      order: [["id", "ASC"]],
+      order: [["id", order]],
 
     })
       .then((data) => {

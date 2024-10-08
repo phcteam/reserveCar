@@ -25,12 +25,14 @@ module.exports = {
         const lim = limit ? parseInt(limit, 10) : 10;
         const offs = page ? (page - 1) * lim : 0;
 
+        const order = req.query.order ? req.query.order.toUpperCase() : "DESC";
+
         try {
             const data = await Database.findAll({
                 where: conditions,
                 limit: lim,
                 offset: offs,
-                order: [["id", "ASC"]],
+                order: [["id", order]],
                 include: [
                     {
                         model: db.depaertments,
