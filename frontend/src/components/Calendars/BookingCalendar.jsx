@@ -4,54 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // สำหรับการคลิก event
 
-import "./bookingCalendar.css"; // ไฟล์ CSS ที่ปรับปรุง
-
-const BookingModal = ({ booking, onClose }) => {
-  if (!booking) return null;
-
-  return (
-    <div
-      className="modal fade show"
-      style={{ display: "block" }}
-      tabIndex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">
-              รายละเอียดการจอง
-            </h5>
-            <button
-              type="button"
-              className="close btn btn-close"
-              onClick={onClose}
-              aria-label="Close"
-            >
-              <span aria-hidden="true"></span>
-            </button>
-          </div>
-          <div className="modal-body">
-            <p>หมายเลขการจอง: {booking.id}</p>
-            <p>ชื่อ: {booking.title}</p>
-            <p>วันที่เริ่ม: {new Date(booking.start).toLocaleString()}</p>
-            <p>วันที่สิ้นสุด: {new Date(booking.end).toLocaleString()}</p>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={onClose}
-            >
-              ปิด
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+import BookingModal from "./BookingModal";
 
 function BookingCalendar() {
   const [bookings, setBookings] = useState([]);
@@ -73,9 +26,11 @@ function BookingCalendar() {
         const data = await response.json();
         const events = data.map((booking) => ({
           id: booking.id,
-          title: `การจองหมายเลข ${booking.id}`,
+          title: `${booking.id}`,
           start: booking.start_time,
           end: booking.end_time,
+          latitude: booking.latitude,
+          longitude: booking.longitude,
         }));
         setBookings(events);
       } catch (error) {
@@ -87,13 +42,22 @@ function BookingCalendar() {
   }, [BaseUrl, token]);
 
   const handleEventClick = (info) => {
-    setSelectedBooking(info.event);
+    const bookingDetails = {
+      id: info.event.id,
+      title: info.event.title,
+      start: info.event.start,
+      end: info.event.end,
+      latitude: info.event.extendedProps.latitude,
+      longitude: info.event.extendedProps.longitude,
+    };
+    setSelectedBooking(bookingDetails); // ส่ง bookingDetails แทน info.event
     setShowModal(true);
   };
 
   return (
     <div className="shadow-sm card card-body border-0 mb-2">
       <h1>ปฏิทินการจองรถ</h1>
+      <hr />
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth" // เริ่มต้นแสดงเป็นเดือน

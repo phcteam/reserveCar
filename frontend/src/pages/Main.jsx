@@ -20,29 +20,27 @@ function Main() {
         ระบบนี้ออกแบบมาเพื่อช่วยให้ทุกคนสามารถจองรถได้ง่ายๆ ผ่านหน้าเว็บไซต์
       </div>
 
-      <div className="mb-2">
-        <div className="row">
-          <div className="col-md-3">
-            <a
-              href="/reserveCar"
-              className="btn btn-secondary card d-flex flex-column align-items-center justify-content-center border-0 shadow-sm "
-              style={{ height: "200px" }}
-            >
-              <FontAwesomeIcon icon={faTicket} size="3x" className="mb-2" />
-              <h4>จองรถ</h4>
-            </a>
-          </div>
+      <div className="row">
+        <div className="col-md-3 mb-2">
+          <a
+            href="/reserveCar"
+            className="btn btn-secondary card d-flex flex-column align-items-center justify-content-center border-0 shadow-sm "
+            style={{ height: "200px" }}
+          >
+            <FontAwesomeIcon icon={faTicket} size="3x" className="mb-2" />
+            <h4>จองรถ</h4>
+          </a>
+        </div>
 
-          <div className="col-md-3">
-            <a
-              className="btn btn-secondary card d-flex align-items-center justify-content-center border-0 shadow-sm "
-              style={{ height: "200px" }}
-            >
-              <FontAwesomeIcon icon={faTruckFast} size="3x" className="mb-2" />
+        <div className="col-md-3 mb-2">
+          <a
+            className="btn btn-secondary card d-flex align-items-center justify-content-center border-0 shadow-sm "
+            style={{ height: "200px" }}
+          >
+            <FontAwesomeIcon icon={faTruckFast} size="3x" className="mb-2" />
 
-              <h4>เดินทาง</h4>
-            </a>
-          </div>
+            <h4>เดินทาง</h4>
+          </a>
         </div>
       </div>
 
