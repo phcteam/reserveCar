@@ -10,6 +10,7 @@ import DriverManagement from "./pages/Admin/DriverManagement";
 import VehiclesManagement from "./pages/Admin/VehiclesManagement";
 import AdminUserManagement from "./pages/Admin/AdminUserManagement";
 import UsersManagement from "./pages/usersManagement";
+import ReserveCarView from "./pages/ReserveCars/ReserveCarView";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -24,40 +25,32 @@ function App() {
 
         <Route
           path="/usersManagement"
-          element={
-            token ? <UsersManagement /> : <Navigate to="/usersManagement" />
-          }
+          element={token ? <UsersManagement /> : <Navigate to="/login" />}
         />
 
-        {/* Admin */}
         <Route
           path="/admin/usersManagement"
-          element={
-            token ? <AdminUserManagement /> : <Navigate to="/usersManagement" />
-          }
+          element={token ? <AdminUserManagement /> : <Navigate to="/login" />}
         />
 
         <Route
           path="/admin/driverManagement"
-          element={
-            token ? <DriverManagement /> : <Navigate to="/driverManagement" />
-          }
+          element={token ? <DriverManagement /> : <Navigate to="/login" />}
         />
 
         <Route
           path="/admin/vehiclesManagement"
-          element={
-            token ? (
-              <VehiclesManagement />
-            ) : (
-              <Navigate to="/vehiclesManagement" />
-            )
-          }
+          element={token ? <VehiclesManagement /> : <Navigate to="/login" />}
         />
 
         <Route
           path="/reserveCar"
-          element={token ? <ReserveCar /> : <Navigate to="/reserveCar" />}
+          element={token ? <ReserveCar /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/reserveCar/view/:bookingId"
+          element={token ? <ReserveCarView /> : <Navigate to="/login" />}
         />
       </Routes>
     </Layout>

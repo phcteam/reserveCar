@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   GoogleMap,
   LoadScript,
@@ -92,6 +92,54 @@ function ReserveCar() {
     }
   };
 
+  const [driverList, setDriverList] = useState([]);
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        const response = await fetch(`${BaseUrl}/drivers`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch drivers");
+        }
+
+        const data = await response.json();
+        setDriverList(data);
+      } catch (error) {
+        console.error("Error fetching drivers:", error);
+      }
+    };
+
+    fetchDrivers();
+  }, [BaseUrl, token]);
+
+  const [vehicleList, setVehicleList] = useState([]);
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const response = await fetch(`${BaseUrl}/vehicles`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch vehicles");
+        }
+
+        const data = await response.json();
+        setVehicleList(data);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
+
+    fetchVehicles();
+  }, [BaseUrl, token]);
+
   return (
     <div>
       <LoadScript googleMapsApiKey={GoogleMapToken} libraries={["places"]}>
@@ -142,10 +190,11 @@ function ReserveCar() {
               required
               className="form-select"
             >
-              <option value="">เลือกคนขับ</option>
-              <option value="1">1</option>
-
-              {/* เพิ่มตัวเลือกคนขับที่นี่ */}
+              {driverList.map((driver) => (
+                <option key={driver.id} value={driver.id}>
+                  {driver.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="col">
@@ -157,10 +206,11 @@ function ReserveCar() {
               required
               className="form-select"
             >
-              <option value="">เลือกรถ</option>
-              <option value="1">1</option>
-
-              {/* เพิ่มตัวเลือกรถที่นี่ */}
+              {vehicleList.map((vehicle) => (
+                <option key={vehicle.id} value={vehicle.id}>
+                  {vehicle.vehicleName} ( {vehicle.plateNumber} )
+                </option>
+              ))}
             </select>
           </div>
         </div>

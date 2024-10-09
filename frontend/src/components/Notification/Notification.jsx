@@ -69,7 +69,12 @@ const Notification = () => {
             onClick={() => setShowToast(false)}
           ></button>
         </div>
-        <div className="toast-body">หมายเลขที่จอง: {newBooking?.id}</div>
+        <a
+          href={`/reserveCar/view/${newBooking?.id}`}
+          className="toast-body btn w-100"
+        >
+          หมายเลขที่จอง: {newBooking?.id}
+        </a>
       </div>
 
       <div className="dropdown">
@@ -105,7 +110,10 @@ const Notification = () => {
           {notifications.length > 0 ? (
             notifications.map((notification, index) => (
               <div key={index} className="m-1">
-                <a className="text-start btn btn-outline-secondary w-100 border-0">
+                <a
+                  href={`/reserveCar/view/${notification.id}`}
+                  className="text-start btn btn-outline-secondary w-100 border-0"
+                >
                   <div className="row">
                     <div className="col">
                       <p> หมายเลขที่จอง: {notification.id} </p>
@@ -127,10 +135,13 @@ const Notification = () => {
           {bookings.length > 0 ? (
             bookings.map((booking, index) => (
               <div key={index} className="m-1">
-                <a className="text-start btn btn-outline-secondary w-100 border-0">
+                <a
+                  href={`/reserveCar/view/${booking.id}`}
+                  className="text-start btn btn-outline-secondary w-100 border-0"
+                >
                   <div className="row">
                     <div className="col">
-                      <p> หมายเลขที่จอง: {booking.id} </p>
+                      <p>หมายเลขที่จอง: {booking.id}</p>
                     </div>
                     <div className="col col-auto">
                       <span className="text-primary">●</span>
