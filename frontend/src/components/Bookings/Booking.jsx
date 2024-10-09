@@ -26,7 +26,7 @@ function Booking({ userId, token }) {
   }, [BaseUrl, userId, token, currentTime]);
 
   return (
-    <div className="card card-body">
+    <div className="card card-body mb-2 border-0 shadow-sm">
       <h4>รายการการจอง</h4>
       {bookings.length > 0 ? (
         <div>

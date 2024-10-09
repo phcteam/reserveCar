@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTicket, faTruckFast } from "@fortawesome/free-solid-svg-icons"; // นำเข้าไอคอนรถ
 import Booking from "../components/Bookings/Booking";
+import BookingCalendar from "../components/Calendars/BookingCalendar";
 
 function Main() {
   const userId = localStorage.getItem("id");
@@ -10,7 +11,7 @@ function Main() {
     <div>
       <h3>ยินดีต้อนรับเข้าสู่ ระบบจองรถ AM</h3>
 
-      <div className="card card-body">
+      <div className="card card-body mb-2 border-0 shadow-sm ">
         <h4>ประชาสัมพันธ์</h4>
         ระบบจองรถ (Reserve Car)
         คือเครื่องมือที่จะช่วยให้การจัดการคิวรถและพนักงานขับรถเป็นเรื่องง่ายดาย
@@ -19,12 +20,12 @@ function Main() {
         ระบบนี้ออกแบบมาเพื่อช่วยให้ทุกคนสามารถจองรถได้ง่ายๆ ผ่านหน้าเว็บไซต์
       </div>
 
-      <div className="mt-4">
+      <div className="mb-2">
         <div className="row">
-          <div className="col-md-3 mb-3">
+          <div className="col-md-3">
             <a
               href="/reserveCar"
-              className="btn btn-secondary card d-flex flex-column align-items-center justify-content-center"
+              className="btn btn-secondary card d-flex flex-column align-items-center justify-content-center border-0 shadow-sm "
               style={{ height: "200px" }}
             >
               <FontAwesomeIcon icon={faTicket} size="3x" className="mb-2" />
@@ -32,9 +33,9 @@ function Main() {
             </a>
           </div>
 
-          <div className="col-md-3 mb-3">
+          <div className="col-md-3">
             <a
-              className="btn btn-secondary card d-flex align-items-center justify-content-center"
+              className="btn btn-secondary card d-flex align-items-center justify-content-center border-0 shadow-sm "
               style={{ height: "200px" }}
             >
               <FontAwesomeIcon icon={faTruckFast} size="3x" className="mb-2" />
@@ -45,6 +46,7 @@ function Main() {
         </div>
       </div>
 
+      <BookingCalendar />
       <Booking userId={userId} token={token} />
     </div>
   );
