@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction"; // สำหรับการคลิก event
+import interactionPlugin from "@fullcalendar/interaction";
+import "./BookingCalendar.css";
 
 import BookingModal from "./BookingModal";
 
@@ -26,7 +27,7 @@ function BookingCalendar() {
         const data = await response.json();
         const events = data.map((booking) => ({
           id: booking.id,
-          title: `${booking.id}`,
+          title: `Booking ${booking.id}`,
           start: booking.start_time,
           end: booking.end_time,
           latitude: booking.latitude,
@@ -70,6 +71,8 @@ function BookingCalendar() {
         eventClick={handleEventClick} // เมื่อคลิกที่การจอง
         locale="th" // เปลี่ยนภาษาเป็นภาษาไทย
         height="auto" // ปรับความสูงให้อัตโนมัติ
+        dayMaxEventRows={3} // จำกัดจำนวน event ที่แสดงในแต่ละวัน
+        moreLinkText="ดูเพิ่มเติม" // กำหนดข้อความของปุ่ม 'See more'
       />
       {showModal && (
         <BookingModal

@@ -1,0 +1,9 @@
+.fc a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.fc a:hover {
+    color: #0084ff;
+    /* text-decoration: underline;   */
+}
